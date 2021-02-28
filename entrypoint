@@ -1,0 +1,35 @@
+#!/bin/bash
+
+cd /valheim
+
+export LD_LIBRARY_PATH=/valheim/linux64
+export SteamAppId=892970
+
+ready=TRUE
+
+test -z "${VALHEIM_NAME}" && {
+  echo "ERROR: invalid environement: VALHEIM_NAME unset"
+  ready=FALSE
+}
+test -z "${VALHEIM_WORLD}" && {
+  echo "ERROR: invalid environement: VALHEIM_WORLD unset"
+  ready=FALSE
+}
+test -z "${VALHEIM_PASSWORD}" && {
+  echo "ERROR: invalid environement: VALHEIM_PASSWORD unset"
+  ready=FALSE
+}
+
+test "${ready}" != 'TRUE' && {
+  echo "ERROR: Invalid configuration; not ready..."
+  exit 1
+}
+
+/valheim/valheim_server.x86_64 \
+  -port 2456 \
+  -nographics \
+  -batchmode  \
+  -name "${VALHEIM_NAME}" \
+  -world "${VALHEIM_WORLD}" \
+  -password "${VALHEIM_PASSWORD}" \
+  -public 0
